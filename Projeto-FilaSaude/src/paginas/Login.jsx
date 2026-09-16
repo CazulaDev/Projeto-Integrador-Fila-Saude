@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { autenticar } from '../services/authService.js'
 
 function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const [erro, setErro] = useState('')
 
   const [form, setForm] = useState({
     email: '',
@@ -20,12 +23,21 @@ function Login() {
 
   function entrar(event) {
     event.preventDefault()
-    navigate('/postos')
+    const usuario = autenticar(form.email, form.senha)
+
+    if (!usuario) {
+      setErro('E-mail ou senha inválidos.')
+      return
+    }
+
+    navigate(location.state?.de || '/postos')
   }
 
   return (
     <section className="card formulario-card">
       <h1>Login</h1>
+
+      {erro && <p className="mensagem-erro">{erro}</p>}
 
       <form onSubmit={entrar}>
         <label htmlFor="email">E-mail</label>
@@ -52,6 +64,12 @@ function Login() {
 
         <button type="submit">Entrar</button>
       </form>
+
+      <div className="dados">
+        <strong>Contas para demonstração</strong>
+        <p>Usuário: usuario@teste.com / 123456</p>
+        <p>Admin: admin@teste.com / admin123</p>
+      </div>
 
       <p>
         Não tem conta? <Link className="link-texto" to="/cadastro">Cadastre-se</Link>

@@ -6,10 +6,34 @@ let postos = [
     endereco: 'Rua Principal, 123',
     bairro: 'Centro',
     telefone: '(11) 99999-988'
+  },
+  {
+    id: 2,
+    nome: 'UBS Vila Esperança',
+    cnpj: '11.111.111/0001-11',
+    endereco: 'Avenida das Flores, 450',
+    bairro: 'Vila Esperança',
+    telefone: '(11) 3333-1212'
+  },
+  {
+    id: 3,
+    nome: 'Centro de Saúde Nova Vida',
+    cnpj: '22.222.222/0001-22',
+    endereco: 'Rua do Sol, 89',
+    bairro: 'Jardim América',
+    telefone: '(11) 3333-3434'
+  },
+  {
+    id: 4,
+    nome: 'UBS Parque das Águas',
+    cnpj: '33.333.333/0001-33',
+    endereco: 'Rua das Nascentes, 210',
+    bairro: 'Parque das Águas',
+    telefone: '(11) 3333-5656'
   }
 ]
 
-let proximoId = 2
+let proximoId = 5
 
 export function listarPostos() {
   return postos

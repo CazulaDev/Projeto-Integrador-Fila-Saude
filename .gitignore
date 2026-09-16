@@ -1,0 +1,7 @@
+Projeto-FilaSaude/node_modules/
+Projeto-FilaSaude/dist/
+
+# Local environment files
+Projeto-FilaSaude/.env
+Projeto-FilaSaude/.env.*
+!Projeto-FilaSaude/.env.example

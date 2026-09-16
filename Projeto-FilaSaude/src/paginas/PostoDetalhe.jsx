@@ -1,11 +1,13 @@
 import { Link, useParams } from 'react-router-dom'
 import { buscarPostoPorId } from '../services/postoService.js'
 import { listarRemediosPorPosto } from '../services/remedioService.js'
+import { obterSessao } from '../services/authService.js'
 
 function PostoDetalhe() {
   const { id } = useParams()
   const posto = buscarPostoPorId(id)
   const remedios = listarRemediosPorPosto(id)
+  const eAdministrador = obterSessao()?.tipoConta === 'admin'
 
   if (!posto) {
     return (
@@ -22,7 +24,7 @@ function PostoDetalhe() {
         <h1>{posto.nome}</h1>
 
         <Link className="botao" to={`/postos/${posto.id}/remedios`}>
-          Gerenciar Remédios
+          {eAdministrador ? 'Gerenciar Remédios' : 'Ver Remédios'}
         </Link>
       </div>
 

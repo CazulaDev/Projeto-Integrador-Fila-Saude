@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { listarPostos, removerPosto } from '../services/postoService.js'
+import { obterSessao } from '../services/authService.js'
 
 function PostoList() {
   const [postos, setPostos] = useState(listarPostos())
+  const eAdministrador = obterSessao()?.tipoConta === 'admin'
 
   function excluirPosto(id) {
     const confirmou = window.confirm('Deseja remover este posto?')
@@ -19,9 +21,7 @@ function PostoList() {
       <div className="cabecalho">
         <h1>Postos de Saúde</h1>
 
-        <Link className="botao" to="/postos/novo">
-          Novo Posto
-        </Link>
+        {eAdministrador && <Link className="botao" to="/postos/novo">Novo Posto</Link>}
       </div>
 
       {postos.length === 0 ? (
@@ -48,13 +48,10 @@ function PostoList() {
                     Ver
                   </Link>
 
-                  <Link className="link-editar" to={`/postos/editar/${posto.id}`}>
-                    Editar
-                  </Link>
-
-                  <button onClick={() => excluirPosto(posto.id)}>
-                    Remover
-                  </button>
+                  {eAdministrador && <>
+                    <Link className="link-editar" to={`/postos/editar/${posto.id}`}>Editar</Link>
+                    <button onClick={() => excluirPosto(posto.id)}>Remover</button>
+                  </>}
                 </td>
               </tr>
             ))}

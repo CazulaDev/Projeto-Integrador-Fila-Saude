@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { buscarPostoPorId } from '../services/postoService.js'
 import { listarRemediosPorPosto, removerRemedio } from '../services/remedioService.js'
+import { obterSessao } from '../services/authService.js'
 
 function RemedioList() {
   const { postoId } = useParams()
   const posto = buscarPostoPorId(postoId)
+  const eAdministrador = obterSessao()?.tipoConta === 'admin'
   const [remedios, setRemedios] = useState(listarRemediosPorPosto(postoId))
 
   function excluirRemedio(id) {
@@ -34,9 +36,7 @@ function RemedioList() {
           <p>{posto.nome}</p>
         </div>
 
-        <Link className="botao" to={`/postos/${postoId}/remedios/novo`}>
-          Novo Remédio
-        </Link>
+        {eAdministrador && <Link className="botao" to={`/postos/${postoId}/remedios/novo`}>Novo Remédio</Link>}
       </div>
 
       {remedios.length === 0 ? (
@@ -59,13 +59,10 @@ function RemedioList() {
                 <td>{remedio.dosagem}</td>
                 <td>{remedio.quantidade}</td>
                 <td className="acoes">
-                  <Link className="link-editar" to={`/postos/${postoId}/remedios/editar/${remedio.id}`}>
-                    Editar
-                  </Link>
-
-                  <button onClick={() => excluirRemedio(remedio.id)}>
-                    Remover
-                  </button>
+                  {eAdministrador && <>
+                    <Link className="link-editar" to={`/postos/${postoId}/remedios/editar/${remedio.id}`}>Editar</Link>
+                    <button onClick={() => excluirRemedio(remedio.id)}>Remover</button>
+                  </>}
                 </td>
               </tr>
             ))}

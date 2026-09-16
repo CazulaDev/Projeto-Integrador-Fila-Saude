@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { cadastrarUsuario } from '../services/authService.js'
 
 function Cadastro() {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ function Cadastro() {
     cnpj: '',
     senhaSegura: ''
   })
+  const [erro, setErro] = useState('')
 
   function alterarCampo(event) {
     const { name, value } = event.target
@@ -24,12 +26,21 @@ function Cadastro() {
 
   function cadastrar(event) {
     event.preventDefault()
+    const resultado = cadastrarUsuario(form)
+
+    if (resultado.erro) {
+      setErro(resultado.erro)
+      return
+    }
+
     navigate('/postos')
   }
 
   return (
     <section className="card formulario-card">
       <h1>Cadastro</h1>
+
+      {erro && <p className="mensagem-erro">{erro}</p>}
 
       <form onSubmit={cadastrar}>
         <label htmlFor="nome">Nome completo</label>
